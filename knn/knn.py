@@ -11,6 +11,8 @@ By using the euclidean metric to calculate the cloest k datas
 '''
 from numpy import *
 import operator
+import matplotlib
+import matplotlib.pyplot as plt
 
 def createDataSet(): #Create the Data set and the labels.
 	'''  This is the way to define the training set 
@@ -72,6 +74,42 @@ def file2matrix(filename):
 		classLabelVector.append(int(ListFromLine[-1])) 
 		index =+ 1
 	return returnMat,classLabelVector
+
+
+'''
+This function will show a figure about your data
+'''
+def showFighure(self):
+	fig = plt.figure()
+	ax = fig.add_subplot(111) 
+	ax.scatter(datingDataMat[:,1],datingDataMat[:,2],15.0*array(datingLabels),15.0*array(datingLabels))
+	plt.show()
+
+'''
+This function will normalize the data,because our values usually have the different meaning and range ,
+so it is important to normalize them. Usually its range is 0 to 1 or 1 to 1 
+Thw formula is : newValue = (oldValue - MinValue)/(MaxValue - MinValue) 
+'''
+def autoNorm(dataSet):
+
+	minValue = dataSet.min(0)
+	'''the array.min(0) will get the minimum of each cloumn,and min(1) will get the minimum og each row
+       the same as max()
+	'''
+	maxValue = dataSet.max(0)
+	ranges = maxValue - minValue
+	normDataSet = zeros(shape(dataSet))
+	m = dataSet.shape[0]
+	'''
+	the tile is going to create a matrix which contains the first argument as the value, second argument as the size
+	(cloumn,row)
+	'''
+	normDataSet = dataSet - tile(minValue,(m,1))
+	normDataSet = normDataSet/tile(ranges,(m,1))
+	return normDataSet,ranges,minValue
+
+
+
 
 
 
